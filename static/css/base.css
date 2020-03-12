@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+h3{
+    margin-top:0;
+}
+body{
+    margin-top: 6.5rem!important;
+}
+.container-fluid {
+    background-color: #302f2f;
+}

@@ -1,0 +1,30 @@
+{%extends 'base.html'%}
+{%block title%}我的网站|个人中心{%endblock%}
+
+{%block home_state_active%} active {%endblock%}
+{%block content%}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 col-xs-10 col-xs-offset-1">
+            {% if user.is_authenticated %}
+            <h2>{{user.username}}</h2>
+            <ul>
+                <li>昵称：{{ user.get_nickname }} <a href="{% url 'userprofile:change_nickname'%}?from={{request.get_full_path}}">修改昵称</a></li>
+                {% if user.email %}
+                    <li>邮箱：{{ user.email }}</li>
+                {% else %}
+                    <li>邮箱：未绑定 <a href="{% url 'userprofile:bind_email' %}?from={{request.get_full_path}}">绑定邮箱</a></li>
+                {% endif %}   
+                <li>上次登陆时间：{{user.last_login|date:'Y-m-d H:i:s'}}</li>
+                <li><a href="{% url 'userprofile:change_password' %}">修改密码</a></li>
+            </ul>
+            {% else %}
+                <span>未登录，跳转到首页...</span>
+                <script type="text/javascript">
+                    window.location.href='/';
+                </script>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{%endblock%}

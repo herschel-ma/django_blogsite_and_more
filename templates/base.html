@@ -1,0 +1,157 @@
+{%load staticfiles%}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{%static 'favicon.ico/golive cs2.ico'%}">
+    <link rel="stylesheet" href="{%static 'css/base.css'%}">
+    <link rel="stylesheet" href="{%static 'bootstrap-3.4.0/css/bootstrap.min.css'%}">
+    <script src="{%static 'js/jquery1.2.4.min.js'%}"></script>
+    <script src="{%static 'bootstrap-3.4.0/js/bootstrap.min.js'%}"></script>
+    <script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/prism.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+    {%block waifu_right %}
+    <script src="{% static 'live2d-widget/autoload.js' %}"></script>
+    {% endblock %}
+    {%block snow_style %}
+    <link href="{% static 'css/snow-flower.css' %}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{% static 'js/jquery.let_it_snow.js' %}"></script>
+    {% endblock %}
+    
+    <style>
+        #github svg {
+            transition: all 1s;
+            fill: #222;
+            color: #fff;
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: 0;
+            width: 80px;
+            height: 80px;
+        }
+
+        #github:hover svg {
+            width: 160px;
+            height: 160px;
+        }
+    </style>
+
+    <title>{% block title %} {% endblock %}</title>
+    {% block header_extends %} {% endblock %}
+</head>
+
+<body class='body_text'>
+    {% block snow %}
+    <canvas width="100%" height="100%" class="flare"></canvas>
+    <canvas width="100%" height="100%" class="snow"></canvas>
+    <canvas width="100%" height="100%" class="flake"></canvas>
+    {% endblock %}
+    {% block waifu %}
+    <a id="github" href="https://github.com/stevenjoezhang/live2d-widget" target="_blank"
+        title="Visit the open-source code on GitHub!">
+        <svg viewBox="0 0 250 250" aria-hidden="true">
+            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+            <path
+                d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+                fill="currentColor" class="octo-arm"></path>
+            <path
+                d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+                fill="currentColor" class="octo-body"></path>
+        </svg>
+    </a>
+    {% endblock %}
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="nav">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'home' %}">博客网站</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class={%block home_state_active%} {%endblock%}><a href="{% url 'home' %}">首页</a></li>
+                    <li class={%block blog_state_active%} {%endblock%}><a href="{% url 'blog:blog_list' %}">博客</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not user.is_authenticated %}
+                    <li><a href="{% url 'userprofile:login' %}?from={{ request.get_full_path }}">登录</a></li>
+                    <li><a href="{% url 'userprofile:register' %}?from={{ request.get_full_path }}">注册</a></li>
+                    {% else %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">
+                            {% if user.has_nickname %}
+                            {{ user.username }} ({{user.get_nickname}})
+                            {% else %}
+                            {{ user.username }}
+                            {% endif %}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'userprofile:user_info' %}">个人中心</a></li>
+                            <li><a href="{% url 'userprofile:change_password' %}">修改密码</a></li>
+                            {% if user.is_superuser %}
+                            <li><a href="{% url 'admin:index' %}">后台管理</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'userprofile:logout' %}">注销</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="navbar-form search-form navbar-right" action="{% url 'blog:handle_search' %}">
+                    <div class="form-group">
+                        <input type="text" name="wd" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% block content %} {% endblock %}
+{% block scripts_extends %} 
+<script>
+    $(document).ready( function() {
+        $("canvas.flare").let_it_snow({
+        windPower: 0,
+        speed: 0,
+        color: "#392F52",
+        size:120,
+        opacity: 0.00000001,
+        count: 40,
+        interaction: false
+    });
+    $("canvas.snow").let_it_snow({
+            windPower: 3,
+            speed: 1,
+            count: 250,
+            size: 0,
+        });
+        $("canvas.flake").let_it_snow({
+            windPower: -3,
+            speed: 1,
+            count: 40,
+            size: 10,
+            image: "{% static 'images/white-snowflake.png' %}"
+        });
+        
+    });
+</script>
+{% endblock %}
+</body>
+
+</html>

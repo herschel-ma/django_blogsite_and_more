@@ -1,0 +1,124 @@
+body{
+    color:rgb(207, 146, 146);
+}
+.col-sm-4 .panel .panel-body .blog-type-ui{
+    list-style-type: none;
+}
+
+h1,h2,h3{
+    color:rgb(214, 27, 27);
+}
+li{
+    color:rgb(59, 61, 197)
+}
+li > a{
+    color:rgb(59, 61, 197)
+}
+div > p,span{
+    color: #000;
+}
+div>p.blog-content{
+    color: #000;
+}
+div > a.reply-style{
+    float: right;
+}
+.blog-title h3{
+    margin-top: 0.5em;
+}
+.blog-content:not(:last-child){
+    margin-bottom: 2em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #ccc;
+}
+.blog-info{
+    margin-bottom: .5em;
+}
+.blog-info span{
+    color:rgb(29, 82, 197);
+}
+.blog-info span:not(:last-child){
+    margin-right:.5em;
+}
+div ul.blog-description{
+    list-style-type: none;
+}
+div ul.blog-description li{
+    display: inline-block;
+}
+div ul.blog-description li:not(:last-child){
+    padding-right:1em;
+}
+.blog-content{
+    text-indent: 2em;
+}
+.comment{
+    border-bottom: 1px dashed #ccc;
+}
+.reply{
+    margin-left: 2em;
+}
+nav.paginator{
+    text-align: center;
+}
+div.blog-more{
+    margin-top: 1em;
+    margin-bottom:.5em;
+}
+div.blog-more span:not(:first-child){
+    float: right;
+}
+div ul.blog_date_noday{
+    list-style-type: none;
+}
+div.comment-area{
+    margin-top: 2em;
+}
+h3.comment-area-title{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: .4em;
+}
+
+div.django-ckeditor-widget{
+    width: 100%;
+}
+
+div#reply_content_container{
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    border-bottom: none;
+    overflow: hidden;
+    padding: 0.5em 1em 0em;
+}
+div.like{
+    margin: 1em 1em 0em;
+    cursor: pointer;
+    display: inline-block;
+    color: #337ab7;
+}
+div.like .active{
+    color: plum;
+}
+div.wrap{
+    position: absolute;
+    top: 4em;
+    right:20em;
+    height: 100vh;
+}
+div.rocket-wrapper{
+    position:fixed;
+    bottom:0;
+    overflow: hidden;
+    width: 5em;
+    height:4em;
+    visibility:hidden;
+}
+img.rocket{
+    width: 5em;
+    height:8em;
+}
+img.rocket:hover{
+    width: 5em;
+    height:8em;
+    margin-top: -4em;
+}

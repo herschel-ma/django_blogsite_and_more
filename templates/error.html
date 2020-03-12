@@ -1,0 +1,11 @@
+{%extends 'base.html'%}
+{%load staticfiles%}
+{% block header_extends %}
+{%endblock%}
+{%block title%}
+我的网站|错误
+{%endblock%}
+{%block home_state_active%} active {%endblock%}
+{%block content%}
+    {{errmsg}}，<a href="{{ redirect_to }}">返回</a>
+{%endblock%}

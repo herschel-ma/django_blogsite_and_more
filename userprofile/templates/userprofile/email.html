@@ -1,0 +1,59 @@
+{% extends 'userprofile/nickname.html' %}
+{% block other_btn %}
+    <button id="send_code" class="btn btn-primary pull-left">发送验证码</button>
+{% endblock %}
+{% block scripts_extends %} 
+<script type="text/javascript">
+    $('#send_code').click(function(){
+        var email = $('#id_email').val();
+        if(email==''){
+            //让错误信息1s后去掉
+            var time = 2
+            interval = setInterval(()=>{
+                if (time<=0){
+                    clearInterval(interval);
+                    $('#tip').text('');
+                    return false
+                }
+                time--;
+                $('#tip').text('* 邮箱不能为空');
+            }, 1000)
+            return false  //让其不往下走
+        }else{
+            $.ajax({
+                url: "{% url 'userprofile:send_verify_code' %}",
+                type: 'GET',
+                data:{
+                    'email': email,
+                    'send_for': 'bind_email_code'
+                },
+                cache: false,
+                success:function(data){
+                    if (data['status'] == 'Success'){
+                        alert(data['status'])
+                    }
+
+                },
+                error:function(data){
+                    alert(data['status'])
+                },
+            })
+        };
+        $(this).addClass('disabled');
+        $(this).attr('disabled', true);
+        var time=30;
+        $(this).text(time+'s');
+        var interval = setInterval(()=>{
+            if (time<=0){
+                clearInterval(interval);
+                $(this).removeClass('disabled');
+                $(this).attr('disabled', false);
+                $(this).text('发送验证码');
+                return false
+            }
+            time--;
+            $(this).text(time+'s');
+        }, 1000);
+    });
+</script>
+{% endblock %}

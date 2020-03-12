@@ -1,0 +1,6 @@
+.vscode
+__pycache__
+migrations
+canvas-check
+jQuery-slideunlock.js
+settings.py
