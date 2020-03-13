@@ -76,10 +76,10 @@
                         <div id="root_{{comment.pk}}" class="comment">
                             <span>{{ comment.user.get_nickname_or_username }}</span>
                             <span>({{ comment.created_time | date:"Y-m-d H:i:s" }}):</span>
+                            <span><a class="reply-style" href="javascript:reply( {{ comment.pk }} );">回复</a></span>
                             <div id="comment_{{comment.pk}}">
                                 {{ comment.text | safe}}
                             </div>
-                            <a class="reply-style" href="javascript:reply( {{ comment.pk }} );">回复</a>
                         
                             {% for reply in comment.root_comments.all %}
                                 <div class="reply">
@@ -87,10 +87,10 @@
                                     <span>({{ reply.created_time | date:"Y-m-d H:i:s" }}):</span>
                                     <span>回复</span>
                                     <span>{{ reply.reply_to.get_nickname_or_username}}</span>
+                                    <span><a class="reply-style" href="javascript:reply( {{ reply.pk }} );">回复</a></span>
                                     <div id="comment_{{reply.pk}}">
                                         {{ reply.text | safe}}
                                     </div>
-                                    <a class="reply-style" href="javascript:reply( {{ reply.pk }} );">回复</a>
                                 </div>
                             {% endfor %}
                         </div>
@@ -174,11 +174,11 @@
                     //判断是否是评论
                     if ($('#reply_comment_id').val()== '0'){ 
                         //插入评论
-                        var comment_html = '<div id="root_'+data['pk']+'" class="comment"><span>'+data['username']+'</span><span> ('+data['created_time']+'):</span><div id="comment_'+data['pk']+'">'+data['text']+'</div><a href="javascript:reply( '+data['pk']+' );">回复</a></div>';
+                        var comment_html = '<div id="root_'+data['pk']+'" class="comment"><span>'+data['username']+'</span><span> ('+data['created_time']+'):</span><span>'+data['reply_to']+'</span><span><a style="float:right;" href="javascript:reply( '+data['pk']+' );">回复</a></span><div id="comment_'+data['pk']+'">'+data['text']+'</div></div>';
                         $('#comment_list').prepend(comment_html);
                     }else{
                         //插入回复
-                        var reply_html = '<div class="reply"><span>'+data['username']+'</span><span> ('+data['created_time']+'):</span><span>回复</span><span>'+data['reply_to']+'</span><div id="'+data['pk']+'">'+data['text']+'</div><a href="javascript:reply( '+data['pk']+' );">回复</a></div>';
+                        var reply_html = '<div class="reply"><span>'+data['username']+'</span><span> ('+data['created_time']+'):</span><span>回复</span><span>'+data['reply_to']+'</span><span><a style="float:right;" href="javascript:reply( '+data['pk']+' );">回复</a></span><div id="'+data['pk']+'">'+data['text']+'</div></div>';
                         $('#root_'+ data['root_pk']).append(reply_html);
                     };
                     

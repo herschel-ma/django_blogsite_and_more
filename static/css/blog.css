@@ -20,7 +20,7 @@ div > p,span{
 div>p.blog-content{
     color: #000;
 }
-div > a.reply-style{
+div > span > a.reply-style{
     float: right;
 }
 .blog-title h3{
