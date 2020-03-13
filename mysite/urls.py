@@ -27,6 +27,7 @@ urlpatterns = [
     path('comment/', include('comment.urls')),
     path('likes/', include('likes.urls')),
     path('userprofile/', include('userprofile.urls')),
+    path('photo/', views.photo_wall, name="photo_wall")
     
 ]
 

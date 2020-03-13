@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no;">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="{%static 'favicon.ico/golive cs2.ico'%}">
     <link rel="stylesheet" href="{%static 'css/base.css'%}">
     <link rel="stylesheet" href="{%static 'bootstrap-3.4.0/css/bootstrap.min.css'%}">
@@ -21,7 +21,7 @@
     <link href="{% static 'css/snow-flower.css' %}" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{% static 'js/jquery.let_it_snow.js' %}"></script>
     {% endblock %}
-    
+    {% block style %}
     <style>
         #github svg {
             transition: all 1s;
@@ -39,8 +39,13 @@
             width: 160px;
             height: 160px;
         }
+        a.navbar-brand:hover{
+            animation:aRotate 1s infinite;
+            -webkit-animation:aRotate 1s infinite;
+            transform:scale(0.8) rotate(-20deg);
+        }
     </style>
-
+    {% endblock %}
     <title>{% block title %} {% endblock %}</title>
     {% block header_extends %} {% endblock %}
 </head>
@@ -82,6 +87,7 @@
                 <ul class="nav navbar-nav">
                     <li class={%block home_state_active%} {%endblock%}><a href="{% url 'home' %}">首页</a></li>
                     <li class={%block blog_state_active%} {%endblock%}><a href="{% url 'blog:blog_list' %}">博客</a></li>
+                    <li class={%block photo_state_active%} {%endblock%}><a href="{% url 'photo_wall' %}">照片墙</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -114,7 +120,7 @@
                     <div class="form-group">
                         <input type="text" name="wd" class="form-control" placeholder="Search">
                     </div>
-                    <button type="submit" class="btn btn-default">
+                    <button type="submit" class="btn btn-default hidden-xs">
                         <span class="glyphicon glyphicon-search"></span>
                     </button>
                 </form>

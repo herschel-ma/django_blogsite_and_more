@@ -1,0 +1,58 @@
+{%extends 'base.html'%}
+{%load staticfiles%}
+{%block waifu_right %}{% endblock %}
+{%block snow_style %}{% endblock %}
+{% block header_extends %} 
+	<link rel="stylesheet" href="{% static 'css/jquery.pageScroll3d.css' %}">
+    <link rel="stylesheet" href="{% static 'css/photo_wall.css' %}">
+    <script defer src="{% static 'js/jquery.mousewheel.min.js' %}"></script>
+	<script defer src="{% static 'js/jquery.pageScroll3d.js' %}"></script>
+{% endblock %}
+{% block style %}{% endblock %}
+{% block title %}我的网站|照片墙{% endblock %}
+{% block snow %}{% endblock %}
+{% block waifu %}{% endblock %}
+{% block content %}
+<main class="main-content">
+    <section>
+        <header class="htmleaf-header">
+            <div class="htmleaf-links">
+            </div>
+        </header>
+        <h1>春</h1>
+    </section>
+    <section>
+        <h1>夏</h1>
+    </section>
+    <section>
+        <h1>秋</h1>
+    </section>
+    <section>
+        <h1>冬</h1>
+    </section>
+</main>
+<style>
+    .s3d__side:nth-child(1) {
+        background-image: url("{% static 'images/sp-01.jpg' %}");
+      }
+      
+    .s3d__side:nth-child(2) {
+    background-image: url("{% static 'images/su-01.jpg' %}");
+    }
+    
+    .s3d__side:nth-child(3) {
+    background-image: url("{% static 'images/au-01.jpg' %}");
+    }
+    
+    .s3d__side:nth-child(4) {
+    background-image: url("{% static 'images/wi-01.jpg' %}");
+    }
+</style>
+{% endblock %}
+{% block scripts_extends %} 
+<script defer>
+    $(document).ready(function() {
+    $('.main-content').scroll3D();
+});
+</script>
+{% endblock %}

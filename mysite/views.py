@@ -18,7 +18,6 @@ def get_seven_days_hot_read_data():
     return blogs[:5]
 
 
-
 def home(request):
     context = {}
     ct = ContentType.objects.get_for_model(Blog)  # 通过model名获取对应的ContentType
@@ -36,3 +35,7 @@ def home(request):
     context['get_seven_days_blogs_read_data'] = get_seven_days_hot_read_data
     return render(request,'home.html', context)
 
+
+def photo_wall(request):
+    context={}
+    return render(request,'photo_wall.html', context)
