@@ -31,13 +31,16 @@ div > span > a.reply-style{
     padding-bottom: 1em;
     border-bottom: 1px solid #ccc;
 }
-.blog-info{
+.blog-info:not(:last-child){
     margin-bottom: .5em;
 }
 .blog-info span{
     color:rgb(29, 82, 197);
 }
-.blog-info span:not(:last-child){
+.blog-info span img,.blog-description span img{
+    width:22px;height:20px;margin:0 3px 3px 0;
+}
+.blog-info span:not(:last-child),.blog-description span:not(:last-child){
     margin-right:.5em;
 }
 div ul.blog-description{
@@ -121,4 +124,26 @@ img.rocket:hover{
     width: 5em;
     height:8em;
     margin-top: -4em;
+}
+span.glyphicon-time{
+    color: #302f2f;
+    padding-top:2px
+}
+span.glyphicon-heart{
+    color:#f10a0a;
+}
+span.font-author{
+    color:rgb(129, 129, 129);
+}
+span.font-time{
+    color:rgb(129, 129, 129);
+}
+span.font-liulan{
+    color:rgb(86, 126, 149);
+}
+span.font-comment{
+    color: rgb(0, 166, 124);
+}
+span.font-heart{
+    color: rgb(247, 135, 137);
 }
