@@ -284,12 +284,14 @@
             drawSlider( ctx2, slider, point )
         }
         img.src = imgUrl[index]
-
         bar.addEventListener("mousedown", ( e ) => {
             isDown = true
             downPointX = e.x
         } )
-
+        bar.addEventListener('touchstart', ( e ) =>{
+            isDown = true
+            downPointX = e.x
+        } )
         document.addEventListener("mousemove", throttle( ( e ) => {
             if( isDown ){
                 var left = e.x - downPointX > 0 ? e.x - downPointX : 0
@@ -298,10 +300,39 @@
                 bar.style.left = ( left > blockData.w ? left + 15 : left ) + "px"
             }
         }) )
+        document.addEventListener("touchmove", throttle( ( e ) => {
+            if( isDown ){
+                var left = e.x - downPointX > 0 ? e.x - downPointX : 0
+                left = left > w - blockData.w - blockData.r - 5 ? w - blockData.w - blockData.r - 5 : left
+                slider.style.left = left + "px"
+                bar.style.left = ( left > blockData.w ? left + 15 : left ) + "px"
+            }
+        }) )
         mouseUp()
+        touchEnd()
     }
     function mouseUp(){
         document.addEventListener("mouseup", ( e ) => {
+            if( isDown ){
+                isDown = false
+                if( Math.abs( ( e.x - downPointX ) - offsetLeft ) < 5 ){
+                    alert('成功')
+                    $('.box').hide()
+                    $('.container').show()
+                    $('.form-signin').submit()
+                } else {
+                    alert('验证失败，请重新验证！')
+                    $('.box').hide()
+                    $('.container').show()
+                }
+                slider.style.left = 0 + "px"
+                bar.style.left = -1 + "px"
+                initImage( ["{%static 'images/1.jpg' %}","{%static 'images/2.jpg' %}"] )
+            }
+        })
+    }
+    function touchEnd(){
+        document.addEventListener("touchend", ( e ) => {
             if( isDown ){
                 isDown = false
                 if( Math.abs( ( e.x - downPointX ) - offsetLeft ) < 5 ){
