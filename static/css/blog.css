@@ -125,6 +125,7 @@ img.rocket:hover{
     height:8em;
     margin-top: -4em;
 }
+/* blog-info-font */
 span.glyphicon-time{
     color: #302f2f;
     padding-top:2px
@@ -146,4 +147,14 @@ span.font-comment{
 }
 span.font-heart{
     color: rgb(247, 135, 137);
+}
+/* process-bar */
+div.process_bar{
+    height:.4em;
+    background: #f10a0a;
+    position: fixed;
+    top:50px;
+    left:0;
+    transition: width 0.5s;
+    -webkit-transition: width 0.5s;
 }

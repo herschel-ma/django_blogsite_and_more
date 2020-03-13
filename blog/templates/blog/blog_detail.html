@@ -108,6 +108,7 @@
 <div class="wrap">
     <div class="rocket-wrapper"><img class="rocket" src="{% static 'images/rocket.png' %}"></div>
 </div>
+<div class="process_bar"></div>
 {%endblock%}
 {% block scripts_extends %} 
 <script type="text/javascript">
@@ -215,6 +216,33 @@
             }else{
                 $('.rocket-wrapper').css("visibility","hidden")
             }
+
+            function IsPC() {
+                var userAgentInfo = navigator.userAgent;
+                var Agents = ["Android", "iPhone",
+                            "SymbianOS", "Windows Phone",
+                            "iPad", "iPod"];
+                var flag = true;
+                for (var v = 0; v < Agents.length; v++) {
+                    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                        flag = false;
+                        break;
+                    }
+                }
+                return flag;
+            }
+            
+            var flag = IsPC();
+            var offsetNum = 0
+            if (flag){
+                offsetNum = $(window).scrollTop()/(document.body.clientHeight-document.body.scrollTop-699);
+            }else{
+                offsetNum = $(window).scrollTop()/(document.body.clientHeight-document.body.scrollTop+809);
+            }
+            console.log(offsetNum);
+            
+            var a = offsetNum*100+'%';
+            $('.process_bar').css('width', a)
         })
 </script>
 {% endblock %}

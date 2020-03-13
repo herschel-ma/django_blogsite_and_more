@@ -12,6 +12,8 @@
 
 	function setLayout($this) {
 		var sides = $this.children();
+		console.log($this);
+		
 
 		$this.append('<nav class="s3d__navigation"><ul class="s3d__navigation-list"></ul></nav>');
 
@@ -26,13 +28,13 @@
 			}
 
 			$this.find('.s3d__navigation-list')
-				.append('<li class="s3d__navigation-item"><a href="#" class="s3d__navigation-link">' + linkText + '</a></li>');
-		});
+				.append('<li class="s3d__navigation-item"><a href="#" class="s3d__navigation-link">' + linkText + '</a></li>');		
+			});
 
 		$this.append('<div class="s3d__content"></div>');
 
 		$this.find('.s3d__content').append(sides);
-
+		
 		sides.addClass('s3d__side');
 	}
 
