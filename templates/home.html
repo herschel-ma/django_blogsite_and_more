@@ -10,76 +10,86 @@
 {%endblock%}
 {%block home_state_active%} active {%endblock%}
 {%block content%}
-
 <h3 class="home-content">欢迎来到我的博客网站！</h3>
-<!-- 图表容器 DOM -->
-<!-- 24小时热门博客 -->
-<div id="container"></div>
-<!-- 引入 highcharts.js -->
-<script type="text/javascript">
-    // 图表配置
-    var options = {
-        chart: { type: 'line' },
-        title: { text: null },
-        xAxis: {
-            categories: {{ dates | safe }},
-            tickmarkPlacement: 'on',  //忽略报错
-            title: { text: '前7日阅读量变化' },
-        },
-    yAxis: {
-        title: { text: null },
-        labels: { enabled: false },
-        gridLineDashStyle: 'Dash',
-        },
-    series: [{                              // 数据列
-        name: '阅读量',                     // 数据列名
-        data: {{ read_nums }},               // 数据,不必要理会报错
-        }],
-        plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: true
-                }
-            }
-        },
-        legend: { enabled: false },
-    credits: { enabled: false },
-    };
-    // 图表初始化函数
-    var chart = Highcharts.chart('container', options);
-</script>
 <div class="hot-data">
-    <h3>今日热门点击</h3>
-    <ul>
-        {% for hot_data in today_hot_data %}
-            <li>
-                <a href="{% url 'blog:blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a> ({{ hot_data.read_num }})
-            </li>
-        {% empty %}
-        <li>今天没有热门博客哦~</li>
-        {% endfor %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#photo_read" data-toggle="tab">阅读排行榜</a></li>
+        <li><a href="#today_read" data-toggle="tab">今日</a></li>
+        <li><a href="#yes_read" data-toggle="tab">昨日</a></li>
+        <li><a href="#month_read" data-toggle="tab">周榜</a></li>
     </ul>
-
-    <h3>昨日热门点击</h3>
-    <ul>
-        {% for hot_data in get_yesterday_hot_data %}
-            <li>
-                <a href="{% url 'blog:blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a> ({{ hot_data.read_num }})
-            </li>
-        {% empty %}
-        <li>昨天没有热门博客哦~</li>
-        {% endfor %}
-    </ul>
-
-    <h3>7日热门点击</h3>
-    <ul>
-        {% for hot_blog in get_seven_days_blogs_read_data %}
-            <li>
-                <a href="{% url 'blog:blog_detail' hot_blog.id %}">{{ hot_blog.title }}</a> ({{ hot_blog.read_num_sum }})
-            </li>
-        {% empty %}
-        <li>7日内没有热门博客哦~</li>
-        {% endfor %}
-    </ul>
+    <div id="mytab-content" class="tab-content">
+        <div class="tab-pane fade in active" id="photo_read">
+            <!-- 图表容器 DOM -->
+            <!-- 24小时热门博客 -->
+            <div id="container"></div>
+            <!-- 引入 highcharts.js -->
+            <script type="text/javascript">
+                // 图表配置
+                var options = {
+                    chart: { type: 'line' },
+                    title: { text: null },
+                    xAxis: {
+                        categories: {{ dates | safe }},
+                        tickmarkPlacement: 'on',  //忽略报错
+                        title: { text: '前7日阅读量变化' },
+                    },
+                yAxis: {
+                    title: { text: null },
+                    labels: { enabled: false },
+                    gridLineDashStyle: 'Dash',
+                    },
+                series: [{                              // 数据列
+                    name: '阅读量',                     // 数据列名
+                    data: {{ read_nums }},               // 数据,不必要理会报错
+                    }],
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: { enabled: false },
+                credits: { enabled: false },
+                };
+                // 图表初始化函数
+                var chart = Highcharts.chart('container', options);
+            </script>
+        </div>
+        <div class="tab-pane fade in" id="today_read">
+            <ul>
+                {% for hot_data in today_hot_data %}
+                    <li>
+                        <a href="{% url 'blog:blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a> ({{ hot_data.read_num }})
+                    </li>
+                {% empty %}
+                <li class="no">今天没有热门博客哦~</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="yes_read">
+            <ul>
+                {% for hot_data in get_yesterday_hot_data %}
+                    <li>
+                        <a href="{% url 'blog:blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a> ({{ hot_data.read_num }})
+                    </li>
+                {% empty %}
+                    <li>昨天没有热门博客哦~</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="month_read">
+            <ul>
+                {% for hot_blog in get_seven_days_blogs_read_data %}
+                    <li>
+                        <a href="{% url 'blog:blog_detail' hot_blog.id %}">{{ hot_blog.title }}</a> ({{ hot_blog.read_num_sum }})
+                    </li>
+                {% empty %}
+                    <li>7日内没有热门博客哦~</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
 {%endblock%}

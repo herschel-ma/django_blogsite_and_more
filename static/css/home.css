@@ -16,12 +16,21 @@ div#container{
     max-width: 30em;
 }
 div.hot-data{
-    text-align: center;
+    width:400px;
+    margin: 0 auto;
+    text-align: left;
     margin-top: 1.5em;
+}
+div.tab-content li a{
+    padding-left: 1em;
 }
 h3{
     color:rgb(207, 146, 146);
 }
 li{
     color:rgb(207, 146, 146);
+    list-style-type: none;
+}
+.nav-tabs{
+    border-bottom: 1px solid #2e2b2b;
 }
