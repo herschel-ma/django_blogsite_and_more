@@ -24,10 +24,10 @@ div > span > a.reply-style{
     float: right;
 }
 .blog-title h3{
-    margin-top: 0.5em;
+    margin-top: 0em;
 }
 .blog-content:not(:last-child){
-    margin-bottom: 2em;
+    margin-bottom: .5em;
     padding-bottom: 1em;
     border-bottom: 1px solid #ccc;
 }

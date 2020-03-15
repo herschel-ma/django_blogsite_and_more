@@ -203,6 +203,7 @@
 					sides.eq(posItem).addClass('active').siblings().removeClass('active');
 
 					sides.eq(posItem).css('z-index', '99').siblings().css('z-index', '0')
+                    sides.eq(posItem).css('visibility', 'visible').siblings().css('visibility', 'hidden');
 
 					container.css({
 						'transform' : 'rotateX(' + deg + 'deg)',
