@@ -12,8 +12,8 @@
 {%block content%}
 <script src="{% static 'live2d-widget/live2d.min.js' %}"></script>
 <script src="{% static 'js/login.js' %}"></script>
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
-
+<link rel="stylesheet" href="{% static 'css/slide-unlock.css' %}">
+<script src="{% static 'js/slideunlock.js' %}"></script>
 {%block snow%}{%endblock%}
 <style>
     html, body {
@@ -26,6 +26,11 @@
         padding-top: 40px;
         padding-bottom: 40px;
         background-color: #f5f5f5;
+    }
+    /*占满*/
+    .body_text{
+        height: 100%;
+        overflow: hidden;
     }
     .form-signin {
         width: 100%;
@@ -154,7 +159,8 @@
                     <p class="text-danger">{{ field.errors.as_text }}</p>
                 {% endfor %}
                 <span class="pull-left text-danger">{{ login_form.non_field_errors }}</span>
-                <input type="submit" class="btn btn-primary btn-login" value="登录">
+                <span><a href="{% url 'userprofile:forget_password' %}">忘记密码？</a></span>
+                <input type="submit" class="btn btn-primary btn-login" data-toggle="modal" data-target=".bs-example-modal-lg" value="登录">
                 <div class="checkbox mb-3">
                     <label>
                         <input type="checkbox" value="remember-me"> 记住我
@@ -172,217 +178,41 @@
         </div>
     </div>
 </div>
-<div class="box">
-    <div class="main">
-        <div class="canvas-box">
-            <canvas id="bgImg" ></canvas>
-            <canvas id="slider" ></canvas>
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="gridSystemModalLabel">Herschel请您通过验证再登录</h4>
         </div>
-        <div class="bar-box">
-            <div class="text">向右滑动滑块填充拼图</div>
-            <div class="bar">→</div>
+        <div id="slider">
+            <div id="slider_bg"></div>
+            <span id="label">>></span>
+            <span id="labelTip">拖动滑块验证</span>
         </div>
     </div>
+  </div>
 </div>
+
 {%endblock%}
 {% block scripts_extends %}
 <script type="text/javascript">
     $('.body_text').addClass('text-center')
-    var bgCanvas = document.getElementById("bgImg")
-    var slider = document.getElementById("slider")
-    var bar = document.getElementsByClassName( "bar" )[0]
-
-    var ctx = bgCanvas.getContext("2d")
-    var ctx2 = slider.getContext("2d")
-
-    var isDown = false
-    var downPointX = 0
-    var offsetLeft = 0
-
-    // 设置canvas的宽高
-    function setCanvasWH( canvas , w, h ){
-        canvas.width = w
-        canvas.height = h
-    }
-    // 获取随机数
-    function getRandomNum( min, max ){
-        var x = Math.random() * ( max - min ) + min
-        return x
-    }
-    // 获取滑动块像素绘制到前面
-    function drawSlider( ctx, canvas, blockData ){
-        var blockW = blockData.w + blockData.r * 2
-        var _y = blockData.y - blockData.r * 2
-        var imageData = ctx.getImageData( blockData.x, _y, blockW, blockW + 10 )
-        canvas.width = blockW
-        ctx.putImageData( imageData, 0, _y )
-    }
-    // 绘制滑块
-    function draw(ctx, xy = { x: 254, y: 109, r: 10, w: 40 }, type) {
-        let x = xy.x,
-        y = xy.y,
-        r = xy.r,
-        w = xy.w;
-        let PI = Math.PI;
-        //绘制
-        ctx.beginPath();
-        //left
-        ctx.moveTo(x, y);
-        //top
-        ctx.arc(x + (w + 5) / 2, y, r, -PI, 0, true);
-        ctx.lineTo(x + w + 5, y);
-        //right
-        ctx.arc(x + w + 5, y + w / 2, r, 1.5 * PI, 0.5 * PI, false);
-        ctx.lineTo(x + w + 5, y + w);
-        //bottom
-        ctx.arc(x + (w + 5) / 2, y + w, r, 0, PI, false);
-        ctx.lineTo(x, y + w);
-        ctx.arc(x, y + w / 2, r, 0.5 * PI, 1.5 * PI, true);
-        ctx.lineTo(x, y);
-        //修饰，没有会看不出效果
-        ctx.lineWidth = 1;
-        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
-        ctx.stroke();
-        ctx[type]();
-        ctx.globalCompositeOperation = "xor";
-    }
-
-    // 初始化图片到canvas
-    function initImage( imgUrl ){
-        var index = Math.floor(Math.random()*imgUrl.length)
-        var w = 400, h = 300
-
-        ctx.clearRect( 0, 0, w, h )
-        ctx2.clearRect( 0, 0, w, h )
-
-        var blockData = {
-            w : 40,
-            r : 10
-        }                   // 切割小块的信息
-
-        // 设置画布基本宽高
-        setCanvasWH( slider, w, h )
-        setCanvasWH( bgCanvas, w, h )
-        // 获取随机宽高
-        offsetLeft = getRandomNum( w / 2 , w - blockData.w - blockData.r * 2 )
-        var offsetTop = getRandomNum( 0 , h - blockData.w - blockData.r * 2 )
-        // 宽高半径和滑块宽
-        var point = {
-            x: offsetLeft,
-            y: offsetTop,
-            r: blockData.r,
-            w: blockData.w
-        }
-
-        var img = document.createElement("img")
-        img.onload = function(){
-            draw( ctx, point, "fill" )
-            draw( ctx2, point, "clip" )
-            ctx.drawImage( img, 0, 0, w, h )
-            ctx2.drawImage( img, 0, 0, w, h )
-            drawSlider( ctx2, slider, point )
-        }
-        img.src = imgUrl[index]
-        bar.addEventListener("mousedown", ( e ) => {
-            isDown = true
-            downPointX = e.x
-        } )
-        bar.addEventListener('touchstart', ( e ) =>{
-            isDown = true
-            downPointX = e.x
-        } )
-        document.addEventListener("mousemove", throttle( ( e ) => {
-            if( isDown ){
-                var left = e.x - downPointX > 0 ? e.x - downPointX : 0
-                left = left > w - blockData.w - blockData.r - 5 ? w - blockData.w - blockData.r - 5 : left
-                slider.style.left = left + "px"
-                bar.style.left = ( left > blockData.w ? left + 15 : left ) + "px"
-            }
-        }) )
-        document.addEventListener("touchmove", throttle( ( e ) => {
-            if( isDown ){
-                var left = e.x - downPointX > 0 ? e.x - downPointX : 0
-                left = left > w - blockData.w - blockData.r - 5 ? w - blockData.w - blockData.r - 5 : left
-                slider.style.left = left + "px"
-                bar.style.left = ( left > blockData.w ? left + 15 : left ) + "px"
-            }
-        }) )
-        mouseUp()
-        touchEnd()
-    }
-    function mouseUp(){
-        document.addEventListener("mouseup", ( e ) => {
-            if( isDown ){
-                isDown = false
-                if( Math.abs( ( e.x - downPointX ) - offsetLeft ) < 5 ){
-                    alert('成功')
-                    $('.box').hide()
-                    $('.container').show()
-                    $('.form-signin').submit()
-                } else {
-                    alert('验证失败，请重新验证！')
-                    $('.box').hide()
-                    $('.container').show()
-                }
-                slider.style.left = 0 + "px"
-                bar.style.left = -1 + "px"
-                initImage( ["{%static 'images/1.jpg' %}","{%static 'images/2.jpg' %}"] )
-            }
-        })
-    }
-    function touchEnd(){
-        document.addEventListener("touchend", ( e ) => {
-            if( isDown ){
-                isDown = false
-                if( Math.abs( ( e.x - downPointX ) - offsetLeft ) < 5 ){
-                    alert('成功')
-                    $('.box').hide()
-                    $('.container').show()
-                    $('.form-signin').submit()
-                } else {
-                    alert('验证失败，请重新验证！')
-                    $('.box').hide()
-                    $('.container').show()
-                }
-                slider.style.left = 0 + "px"
-                bar.style.left = -1 + "px"
-                initImage( ["{%static 'images/1.jpg' %}","{%static 'images/2.jpg' %}"] )
-            }
-        })
-    }
-    function throttle( fn, interval ){
-        var timer = null
-        var isFirst = true
-        return function(){
-            if( isFirst ){
-                isFirst = false
-                fn.apply( null, arguments )
-            }
-            if( timer ){
-                return 
-            }
-            timer = setTimeout( () => {
-                clearTimeout(timer)
-                timer = null
-                fn.apply( null, arguments )
-            }, interval || 10 )
-        }
-    }
-
-
-    initImage( ["{%static 'images/1.jpg' %}","{%static 'images/2.jpg' %}"] )
-    //后面可以爬虫许多图片进行展示
-    //点击登录后显示滑动验证
     function func(event){
         event.preventDefault();
     }
     $('.btn-login').click(()=>{
-        func(event)
-        $('.box').show()
-        $('.container').hide()
-        $('.box').css('margin', '0 auto')
+        func(event);
     })
-
+    $(function () {
+        var slider = new SliderUnlock('#slider',{
+                successLabelTip : '验证通过'
+            },function(){
+                $('.bs-example-modal-lg').modal('hide')
+                $('.form-signin').submit()
+            });
+        slider.init();
+    })
 </script>
 {% endblock %}

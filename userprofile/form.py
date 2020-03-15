@@ -4,11 +4,13 @@ from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
     username_or_email = forms.CharField(label='用户名或邮箱', required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'请输入用户名或邮箱', 'autofocus':'autofocus'}))
-    password = forms.CharField(label='密码', widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'请输入密码'}))
-
+    password = forms.CharField(label='密码', error_messages={'required': ''}, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'请输入密码'}))
+        
     def clean(self):
         username_or_email = self.cleaned_data['username_or_email']
-        password = self.cleaned_data['password']
+        password = self.cleaned_data.get('password', '')
+        if len(password) < 6:
+            raise forms.ValidationError('密码不能少于6位')
         user = auth.authenticate(username=username_or_email, password=password)
         if user is None:
             if User.objects.filter(email=username_or_email).exists():
@@ -21,7 +23,7 @@ class LoginForm(forms.Form):
         else:
             self.cleaned_data['user'] = user
         return self.cleaned_data
-
+    
 class RegForm(forms.Form):
     username = forms.CharField(label='用户名',max_length=20,min_length=3,widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'请输入3-20位用户名'}))
     email = forms.EmailField(label='邮箱', widget=forms.EmailInput(attrs={'class':'form-control', 'placeholder':'请输入邮箱'}))
