@@ -5,7 +5,7 @@ body{
     list-style-type: none;
 }
 
-h1,h2,h3{
+h1,h2,h3,h4,h5,h6{
     color:rgb(214, 27, 27);
 }
 li{
@@ -68,8 +68,11 @@ div.blog-more{
     margin-top: 1em;
     margin-bottom:.5em;
 }
-div.blog-more span:not(:first-child){
+div.blog-more a:not(:first-child){
     float: right;
+}
+div.blog-more a:hover{
+    background: rgb(224, 255, 255);
 }
 div ul.blog_date_noday{
     list-style-type: none;

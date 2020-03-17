@@ -35,12 +35,14 @@
             </div>
             <div class="blog-more">
                 {% if previous_blog %}
-                <span>上一篇：<a href="{% url 'blog:blog_detail' previous_blog.pk %}">{{previous_blog.title}}</a></span>
+                <a type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" 
+                title="{{previous_blog.title}}" href="{% url 'blog:blog_detail' previous_blog.pk %}"><< 上一篇</a>
                 {% else %}
                 {% endif %}
 
                 {% if next_blog %}
-                <span>下一篇：<a href="{% url 'blog:blog_detail' next_blog.pk %}">{{next_blog.title}}</a></span>
+                <a type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" 
+                title="{{next_blog.title}}" href="{% url 'blog:blog_detail' next_blog.pk %}">下一篇 >></a>
                 {% else %}
                 {% endif %}
             </div>
@@ -242,6 +244,7 @@
             
             var a = offsetNum*100+'%';
             $('.process_bar').css('width', a)
-        })
+        });
+    $(function () { $("[data-toggle='tooltip']").tooltip(); });
 </script>
 {% endblock %}

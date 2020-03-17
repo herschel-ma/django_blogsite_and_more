@@ -91,4 +91,4 @@ def handle_search(request):
                 search_blogs = Blog.objects.filter(condition)
                 context = get_blogs_common(request, search_blogs)
     context['search_words'] = sw
-    return render(request, 'blog/blog_search.html', context) 
+    return render(request, 'blog/blog_search.html', context)

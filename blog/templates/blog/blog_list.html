@@ -25,7 +25,7 @@
                         {% comment %} 共有{{ blogs|length }}篇博客 {% endcomment %}
                         {% for blog in blogs %}
                         <a href="{% url 'blog:blog_detail' blog.pk %}">
-                            <h3 class="">{{ blog.title }}</h3>
+                            <h4 class="">{{ blog.title }}</h4>
                         </a>
                         <p class="blog-info">
                             <span class="glyphicon glyphicon-tag" aria-hidden="true"><a
@@ -36,7 +36,7 @@
                             <span><img src="{% static 'images/comments.png' %}"><span class="font-comment">{% get_comment_count blog %}评论</span></span>
                             <span class="glyphicon glyphicon-heart"><span class="font-heart">{% get_like_count blog %}点赞</span></span>
                         </p>
-                        <p class="blog-content">{{ blog.content|safe|striptags|truncatechars_html:100}}</p>
+                        <p class="blog-content">{{ blog.content|striptags|truncatechars_html:280|remove_head|safe}}</p>
                         {% empty %}
                         <p>--暂无博客，敬请期待--</p>
                         {% endfor %}
@@ -88,8 +88,8 @@
                         <ul class="blog-type-ui">
                             {%for blog_type in blog_types %}
                             <li>
-                                <a href="{%url 'blog:blog_type' blog_type.pk%}">
-                                    {{blog_type.type_name}} ({{blog_type.blog_count}})
+                                <a class="btn btn-default btn-xs" href="{%url 'blog:blog_type' blog_type.pk%}">{{blog_type.type_name}}
+                                    <span class="badge">{{blog_type.blog_count}}</span>
                                 </a>
                             </li>
                             {%empty%}
@@ -106,9 +106,12 @@
                 <div class="panel-body">
                     <ul class="blog_date_noday">
                         {% for blog_date, blog_count in blog_dates.items %}
-                        <a href="{% url 'blog:blog_date' blog_date.year blog_date.month %}">
-                            <li>{{blog_date|date:'Y年m月'}} ({{blog_count}})</li>
-                        </a>
+                        <li>
+                            <a class="btn btn-default btn-xs" href="{% url 'blog:blog_date' blog_date.year blog_date.month %}">
+                                {{blog_date|date:'Y年m月'}}
+                                <span class="badge">{{blog_count}}</span>
+                            </a>
+                        </li>
                         {%empty%}
                         <li>--暂无归档-</li> 
                         {%endfor%}
@@ -120,4 +123,44 @@
     </div>
 </div>
 
+{% endblock %}
+{% block scripts_extends %} 
+<script>
+    $(function(){
+        function max_read(){
+            var string = $('.font-liulan').text().replace(/[^0-9]/ig," ").split(' ')
+        .filter(function (s) {
+            return s && s.trim(); // 注：IE9(不包含IE9)以下的版本没有trim()方法
+        });
+        string = string.map(Number);
+        s = Math.max(...string);
+        if (s!=0){
+            index = string.indexOf(s);  //找到阅读数的最大值位置
+            var title = $('.font-liulan')[index].parentNode.parentNode.previousSibling.previousElementSibling.text
+            max_comment()
+            $('.font-liulan')[index].parentNode.parentNode.previousSibling.previousElementSibling.innerHTML=
+            '<h4>'+title+' <span style="" class="label label-danger">热读文章</span></h4>'
+            $('.label').css('font-size', '13px')}
+        }
+
+        function max_comment(){
+            var string2 = $('.font-comment').text().replace(/[^0-9]/ig," ").split(' ')
+            .filter(function (s) {
+                return s && s.trim(); 
+            });
+            string2 = string2.map(Number);
+            s2 = Math.max(...string2);
+            if (s2!=0){
+
+                index2 = string2.indexOf(s2);  //找到评论数的最大值位置
+                var title2 = $('.font-comment')[index2].parentNode.parentNode.previousSibling.previousElementSibling.text
+                $('.font-comment')[index2].parentNode.parentNode.previousSibling.previousElementSibling.innerHTML=
+                '<h4>'+title2+' <span style="" class="label label-danger">评论最多</span></h4>'
+                $('.label').css('font-size', '12px')
+            }
+        }
+        max_read()
+        
+    });
+</script>
 {% endblock %}

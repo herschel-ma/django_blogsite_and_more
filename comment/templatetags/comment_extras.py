@@ -3,7 +3,7 @@ from django.core import exceptions
 from django.contrib.contenttypes.models import ContentType
 from ..models import Comment
 from ..form import CommentForm
-
+import re
 from read_record.models import ReadNum
 
 register = template.Library()
@@ -32,3 +32,8 @@ def get_read_num(obj):
         return readnum.read_num
     except exceptions.ObjectDoesNotExist:
             return 0
+
+@register.filter(name='remove_head')
+def remove_head(value):
+    value = value.replace("&nbsp;","+").strip('').replace("+++++","").replace("++","")
+    return value
