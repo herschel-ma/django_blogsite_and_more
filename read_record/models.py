@@ -9,7 +9,9 @@ class ReadNum(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-
+    class Meta:
+        verbose_name = "总阅读数量"
+        verbose_name_plural = "总阅读数量"
 
 class ReadDetail(models.Model):
     read_num = models.IntegerField(default=0)
@@ -18,3 +20,6 @@ class ReadDetail(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    class Meta:
+        verbose_name = "带日期阅读数量"
+        verbose_name_plural = "带日期阅读数量"

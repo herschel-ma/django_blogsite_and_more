@@ -11,9 +11,6 @@ h1,h2,h3,h4,h5,h6{
 li{
     color:rgb(59, 61, 197)
 }
-li > a{
-    color:rgb(59, 61, 197)
-}
 div > p,span{
     color: #000;
 }
