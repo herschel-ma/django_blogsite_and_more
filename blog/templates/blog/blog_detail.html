@@ -17,96 +17,117 @@
 </ul>
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-lg-10 col-lg-offset-1">
-            <h3>{{ blog.title }}</h3>
-            <ul class="blog-description">
-                <span role="li"><img src="{% static 'images/zuozhe.png' %}"><span class="font-author">{{ blog.author }}</span></span>
-                <span class="glyphicon glyphicon-tag" aria-hidden="true"><a
-                    href="{%url 'blog:blog_type' blog.blog_type.pk%}">{{blog.blog_type}}</a></span>
-                <span class="glyphicon glyphicon-time"
-                    aria-hidden="true"><span class="font-time">{{ blog.created_time | date:'Y-m-d' }}</span></span>
-                <span><img src="{% static 'images/liulan.png' %}"><span class="font-liulan">{% get_read_num blog %}阅读</span></span>
-                <span><img src="{% static 'images/comments.png' %}"><span class="font-comment">{% get_comment_count blog %}评论</span></span>
-                <span class="glyphicon glyphicon-heart"><span class="font-heart">{% get_like_count blog %}点赞</span></span>
-            </ul>
-            <div class="blog-detail-content">{{ blog.content | safe }}</div>
-            <div class="like" onclick="likeChange(this, '{{ blog.pk }}');">
-                <span class="glyphicon glyphicon-star-empty {%get_like_status blog%}"></span>
-                <span class="like_num">{% get_like_count blog%}</span>
-                <span>喜欢</span>
-            </div>
-            <div class="blog-more">
-                {% if previous_blog %}
-                <a type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" 
-                title="{{previous_blog.title}}" href="{% url 'blog:blog_detail' previous_blog.pk %}"><< 上一篇</a>
-                {% else %}
-                {% endif %}
+        <div class="col-xs-12 col-lg-1"></div>
+        <div class="col-xs-12 col-lg-10">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="blog_header">
+                        <h3 class="panel-title">{{ blog.title }}</h3>
+                        <ul class="blog-description">
+                            <span role="li"><img src="{% static 'images/zuozhe.png' %}"><span class="font-author">{{ blog.author }}</span></span>
+                            <span class="glyphicon glyphicon-tag" aria-hidden="true"><a
+                                href="{%url 'blog:blog_type' blog.blog_type.pk%}">{{blog.blog_type}}</a></span>
+                            <span class="glyphicon glyphicon-time"
+                                aria-hidden="true"><span class="font-time">{{ blog.created_time | date:'Y-m-d' }}</span></span>
+                            <span><img src="{% static 'images/liulan.png' %}"><span class="font-liulan">{% get_read_num blog %}阅读</span></span>
+                            <span><img src="{% static 'images/comments.png' %}"><span class="font-comment">{% get_comment_count blog %}评论</span></span>
+                            <span class="glyphicon glyphicon-heart"><span class="font-heart">{% get_like_count blog %}点赞</span></span>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="blog-detail-content">{{ blog.content | safe }}</div>
+                    <div class="like" onclick="likeChange(this, '{{ blog.pk }}');">
+                        <span class="glyphicon glyphicon-star-empty {%get_like_status blog%}"></span>
+                        <span class="like_num">{% get_like_count blog%}</span>
+                        <span>喜欢</span>
+                    </div>
+                    <div class="blog-more">
+                        {% if previous_blog %}
+                        <a type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" 
+                        title="{{previous_blog.title}}" href="{% url 'blog:blog_detail' previous_blog.pk %}"><< 上一篇</a>
+                        {% else %}
+                        {% endif %}
 
-                {% if next_blog %}
-                <a type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" 
-                title="{{next_blog.title}}" href="{% url 'blog:blog_detail' next_blog.pk %}">下一篇 >></a>
-                {% else %}
-                {% endif %}
+                        {% if next_blog %}
+                        <a type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" 
+                        title="{{next_blog.title}}" href="{% url 'blog:blog_detail' next_blog.pk %}">下一篇 >></a>
+                        {% else %}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title comment-area-title">参与评论</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="comment-area">
+                        {% if user.is_authenticated %}
+                            <form id="comment_form" action="{% url 'comment:update_comment' %}", method="POST">
+                                {% csrf_token %}
+                                <label for="input-comment">{{ user.get_nickname_or_username }}，欢迎评论~</label>
+                                <div id="reply_content_container" style="display:none;">
+                                    <p>回复：</p>
+                                    <div id="reply_content">
 
-            <div class="comment-area">
-                <h3 class="comment-area-title">提交评论</h3>
-                {% if user.is_authenticated %}
-                    <form id="comment_form" action="{% url 'comment:update_comment' %}", method="POST">
-                        {% csrf_token %}
-                        <label for="input-comment">{{ user.get_nickname_or_username }}，欢迎评论~</label>
-                        <div id="reply_content_container" style="display:none;">
-                            <p>回复：</p>
-                            <div id="reply_content">
-
-                            </div>
-                        </div>
-                        {% get_comment_form blog as comment_form %}
-                        {% for form in comment_form %}
-                        {{ form }}
-                        {% endfor %}
-                        <span id="comment_errors" class="text-danger pull-left"></span>
-                        <button type="submit" class="btn btn-primary pull-right" value="评论">评论</button>
-                    </form>
-                {% else %}
-                    尚未登录,登陆之后才能评论哦~
-                    <a class="btn btn-primary" href="{% url 'userprofile:login' %}?from={{ request.get_full_path }}">登录</a>
-                    <span> or </span>
-                    <a class="btn btn-danger" href="{% url 'userprofile:register' %}?from={{ request.get_full_path }}">注册</a>
-                {% endif %}
-            </div>
-            <div class="comment-area">
-                <h3 class="comment-area-title">评论列表</h3>
-                <div id="comment_list">
-                    {% get_comments blog as comments%}
-                    {% for comment in comments %}
-                        <div id="root_{{comment.pk}}" class="comment">
-                            <span>{{ comment.user.get_nickname_or_username }}</span>
-                            <span>({{ comment.created_time | date:"Y-m-d H:i:s" }}):</span>
-                            <span><a class="reply-style" href="javascript:reply( {{ comment.pk }} );">回复</a></span>
-                            <div id="comment_{{comment.pk}}">
-                                {{ comment.text | safe}}
-                            </div>
-                        
-                            {% for reply in comment.root_comments.all %}
-                                <div class="reply">
-                                    <span>{{ reply.user.get_nickname_or_username }}</span>
-                                    <span>({{ reply.created_time | date:"Y-m-d H:i:s" }}):</span>
-                                    <span>回复</span>
-                                    <span>{{ reply.reply_to.get_nickname_or_username}}</span>
-                                    <span><a class="reply-style" href="javascript:reply( {{ reply.pk }} );">回复</a></span>
-                                    <div id="comment_{{reply.pk}}">
-                                        {{ reply.text | safe}}
                                     </div>
                                 </div>
+                                {% get_comment_form blog as comment_form %}
+                                {% for form in comment_form %}
+                                {{ form }}
+                                {% endfor %}
+                                <span id="comment_errors" class="text-danger pull-left"></span>
+                                <button type="submit" class="btn btn-primary pull-right" value="评论">评论</button>
+                            </form>
+                        {% else %}
+                            尚未登录,登陆之后才能评论哦~
+                            <a class="btn btn-primary" href="{% url 'userprofile:login' %}?from={{ request.get_full_path }}">登录</a>
+                            <span> or </span>
+                            <a class="btn btn-danger" href="{% url 'userprofile:register' %}?from={{ request.get_full_path }}">注册</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title comment-area-title">评论列表</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="comment-area">
+                        <div id="comment_list">
+                            {% get_comments blog as comments%}
+                            {% for comment in comments %}
+                                <div id="root_{{comment.pk}}" class="comment">
+                                    <span>{{ comment.user.get_nickname_or_username }}</span>
+                                    <span>({{ comment.created_time | date:"Y-m-d H:i:s" }}):</span>
+                                    <span><a class="reply-style" href="javascript:reply( {{ comment.pk }} );">回复</a></span>
+                                    <div id="comment_{{comment.pk}}">
+                                        {{ comment.text | safe}}
+                                    </div>
+                                
+                                    {% for reply in comment.root_comments.all %}
+                                        <div class="reply">
+                                            <span>{{ reply.user.get_nickname_or_username }}</span>
+                                            <span>({{ reply.created_time | date:"Y-m-d H:i:s" }}):</span>
+                                            <span>回复</span>
+                                            <span>{{ reply.reply_to.get_nickname_or_username}}</span>
+                                            <span><a class="reply-style" href="javascript:reply( {{ reply.pk }} );">回复</a></span>
+                                            <div id="comment_{{reply.pk}}">
+                                                {{ reply.text | safe}}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% empty %}
+                                <span id="no_comment">暂无评论</span>
                             {% endfor %}
                         </div>
-                    {% empty %}
-                        <span id="no_comment">暂无评论</span>
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-xs-12 col-lg-1"></div>
     </div>
 </div>
 <div class="wrap">

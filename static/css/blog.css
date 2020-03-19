@@ -74,13 +74,13 @@ div.blog-more a:hover{
 div ul.blog_date_noday{
     list-style-type: none;
 }
-div.comment-area{
+/* div.comment-area{
     margin-top: 2em;
-}
-h3.comment-area-title{
+} */
+/* h3.comment-area-title{
     border-bottom: 1px solid #ccc;
     padding-bottom: .4em;
-}
+} */
 
 div.django-ckeditor-widget{
     width: 100%;
@@ -157,4 +157,7 @@ div.process_bar{
     left:0;
     transition: width 0.5s;
     -webkit-transition: width 0.5s;
+}
+div.blog_header{
+    margin: .4em 0 -.8em 0;
 }
