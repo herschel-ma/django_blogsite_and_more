@@ -248,7 +248,7 @@
             $('.process_bar').css('width', a)
         });
     $(function() { $("[data-toggle='tooltip']").tooltip(); }); // bootstrap工具提示
-    $(function() {
+    $(function() {  // 目录，目前只支持h4\(^o^)/~...
         var arr = new Array();
         var s= '<li class="toc_h4">目录</li>';
         for(var i=0;i<$('h4').length;i++){
@@ -272,6 +272,29 @@
             300);
             return false;
         });
-    })
+    });
+    $(window).scroll(function(){ //滚动到标题，目录高亮
+        for(var i=0;i<$('h4').length-1;i++){
+            if ($(window).scrollTop() >= $('h4')[i].offsetTop && $(window).scrollTop() < $('h4')[i+1].offsetTop){
+                $('.toc_h4 a[href="'+'#_'+(i+1)+'"]').addClass('active')
+                for(var j=i+1;j<$('h4').length;j++){
+                    $('.toc_h4 a[href="'+'#_'+(j+1)+'"]').removeClass('active')
+                }
+                if(i>1 && $('h4')[i-1].offsetTop<=$(window).scrollTop() < $('h4')[i].offsetTop){
+                    $('.toc_h4 a[href="'+'#_'+(i-1)+'"]').removeClass('active')
+                }
+            }else{
+                $('.toc_h4 a[href="'+'#_'+(i+1)+'"]').removeClass('active')
+            }
+        }
+        // 修复最后一个不高亮的bug
+        if ($(window).scrollTop() >= $('h4#_'+(i+1)).offset().top-61 && $(window).scrollTop()<$('.comment-area-title').offset().top) {
+            $('.toc_h4:last-child>a').addClass('active')
+        }
+        else{
+            $('.toc_h4:last-child>a').removeClass('active')
+        }
+
+    });
 </script>
 {% endblock %}

@@ -14,4 +14,16 @@ body{
 form.search-form button{
     margin-left: -3em;
 }
-a:hover{text-decoration:none}
+.toc_h4 a{
+    transition: margin-left 1s;
+    -webkit-transition: margin-left 1s; /* Safari */
+}
+.toc_h4 a:hover{
+    margin-left: 1em;
+}
+a:hover{
+    text-decoration:none
+}
+.toc_h4 a.active{
+    color: red;
+}
