@@ -103,7 +103,7 @@ div.like .active{
     color: plum;
 }
 div.wrap{
-    position: absolute;
+    position: fixed;
     top: 4em;
     right:20em;
     height: 100vh;
@@ -119,6 +119,7 @@ div.rocket-wrapper{
 img.rocket{
     width: 5em;
     height:8em;
+    margin-top: -4em
 }
 img.rocket:hover{
     width: 5em;
