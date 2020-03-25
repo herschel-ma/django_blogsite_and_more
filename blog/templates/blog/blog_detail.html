@@ -256,13 +256,17 @@
                 }
                 return flag;
             }
-            
+            var dh = $(document).height(),
+            wh = $(window).height();
+
             var flag = IsPC();
             var offsetNum = 0
             if (flag){
-                offsetNum = $(window).scrollTop()/(document.body.clientHeight-document.body.scrollTop-699);
+                //offsetNum = $(window).scrollTop()/(document.body.clientHeight-document.body.scrollTop-699);
+                offsetNum = $(window).scrollTop()/(dh-wh);
             }else{
-                offsetNum = $(window).scrollTop()/(document.body.clientHeight-document.body.scrollTop-499);
+                offsetNum = $(window).scrollTop()/(dh-wh);
+                //offsetNum = $(window).scrollTop()/(document.body.clientHeight-document.body.scrollTop-499);
             }
             
             var a = offsetNum*100+'%';
