@@ -24,6 +24,7 @@
                     <div>
                         {% comment %} 共有{{ blogs|length }}篇博客 {% endcomment %}
                         {% for blog in blogs %}
+                        <div class="blog_list">
                         <a href="{% url 'blog:blog_detail' blog.pk %}">
                             <h4 class="">{{ blog.title }}</h4>
                         </a>
@@ -37,6 +38,7 @@
                             <span class="glyphicon glyphicon-heart"><span class="font-heart">{% get_like_count blog %}点赞</span></span>
                         </p>
                         <p class="blog-content">{{ blog.content|striptags|truncatechars_html:280|remove_head|safe}}</p>
+                        </div>
                         {% empty %}
                         <p>--暂无博客，敬请期待--</p>
                         {% endfor %}

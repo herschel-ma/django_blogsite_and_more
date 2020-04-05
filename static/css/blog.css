@@ -162,3 +162,10 @@ div.process_bar{
 div.blog_header{
     margin: .4em 0 -.8em 0;
 }
+div.blog_list{
+    border-bottom: solid 1px #ccc;
+    box-shadow: 5px 5px 5px #2f97c959;
+}
+div.blog_list:not(:last-child){
+    margin-bottom: 1.5em;
+}
