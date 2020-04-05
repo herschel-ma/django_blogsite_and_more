@@ -162,6 +162,26 @@
             }
         }
         max_read()
+        function IsPC() {
+            var userAgentInfo = navigator.userAgent;
+            var Agents = ["Android", "iPhone",
+                        "SymbianOS", "Windows Phone",
+                        "iPad", "iPod"];
+            var flag = true;
+            for (var v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+            
+        }
+        var flag = IsPC();
+        if(flag){
+            $('.blog_list').css('padding', '0 2em')
+            $('.blog_list').css('margin', '0 3em 3em 3em')
+        }
         
     });
 </script>
