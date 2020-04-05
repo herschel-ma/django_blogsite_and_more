@@ -178,9 +178,27 @@
             
         }
         var flag = IsPC();
+        var FLAG = flag
+        function showPanelBody(){
+            FLAG = false
+            $('.hidden-xs div .panel-body').css('display', '')
+        }
+        function hidePanelBody(){
+            $('.hidden-xs div .panel-body').css('display', 'none')
+            FLAG = true
+        }
         if(flag){
             $('.blog_list').css('padding', '0 2em')
             $('.blog_list').css('margin', '0 3em 3em 3em')
+            hidePanelBody()
+            $('.hidden-xs div .panel-title').click(()=>{
+                if (FLAG){
+                    showPanelBody()
+                }else{
+                    hidePanelBody()
+                }
+                
+            })
         }
         
     });
