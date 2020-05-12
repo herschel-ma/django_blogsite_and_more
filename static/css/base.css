@@ -28,3 +28,4 @@ a:hover{
 .toc_h4 a.active{
     color: red;
 }
+.navbar-brand a{font-size:17px;}
