@@ -8,6 +8,9 @@
 {%block header_extends%}
 <link rel="stylesheet" href={% static 'css/base.css' %}>
 <link rel="stylesheet" href={% static 'css/blog.css' %}>
+<link rel="stylesheet" href={% static 'css/editormd.min.css' %}>
+<script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/prism.css' %}">
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {%endblock%}
@@ -36,7 +39,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="blog-detail-content">{{ blog.content | safe }}</div>
+                    <div class="blog-detail-content markdown-body">{{ blog.content | safe }}</div>
                     <div class="like" onclick="likeChange(this, '{{ blog.pk }}');">
                         <span class="glyphicon glyphicon-star-empty {%get_like_status blog%}"></span>
                         <span class="like_num">{% get_like_count blog%}</span>
@@ -128,6 +131,7 @@
             </div>
         </div>
         <div class="col-xs-12 col-lg-1">
+            {{toc|safe}}
             <div class="wrap">
                 <div class="rocket-wrapper"><img class="rocket" src="{% static 'images/rocket.png' %}"></div>
             </div>
@@ -300,29 +304,29 @@
             return false;
         });
     });
-    $(window).scroll(function(){ //滚动到标题，目录高亮
-        for(var i=0;i<$('h4').length-1;i++){
-            if ($(window).scrollTop() >= $('h4')[i].offsetTop && $(window).scrollTop() < $('h4')[i+1].offsetTop){
-                $('.toc_h4 a[href="'+'#_'+(i+1)+'"]').addClass('active')
-                for(var j=i+1;j<$('h4').length;j++){
-                    $('.toc_h4 a[href="'+'#_'+(j+1)+'"]').removeClass('active')
-                }
-                if(i>1 && $('h4')[i-1].offsetTop<=$(window).scrollTop() < $('h4')[i].offsetTop){
-                    $('.toc_h4 a[href="'+'#_'+(i-1)+'"]').removeClass('active')
-                }
-            }else{
-                $('.toc_h4 a[href="'+'#_'+(i+1)+'"]').removeClass('active')
-            }
-        }
-        // 修复最后一个不高亮的bug
-        if ($(window).scrollTop() >= $('h4#_'+(i+1)).offset().top-61 && $(window).scrollTop()<$('.comment-area-title').offset().top) {
-            $('.toc_h4:last-child>a').addClass('active')
-        }
-        else{
-            $('.toc_h4:last-child>a').removeClass('active')
-        }
-
-    });
+//    $(window).scroll(function(){ //滚动到标题，目录高亮
+//        for(var i=0;i<$('h4').length-1;i++){
+//            if ($(window).scrollTop() >= $('h4')[i].offsetTop && $(window).scrollTop() < $('h4')[i+1].offsetTop){
+//                $('.toc_h4 a[href="'+'#_'+(i+1)+'"]').addClass('active')
+//                for(var j=i+1;j<$('h4').length;j++){
+//                    $('.toc_h4 a[href="'+'#_'+(j+1)+'"]').removeClass('active')
+//                }
+//                if(i>1 && $('h4')[i-1].offsetTop<=$(window).scrollTop() < $('h4')[i].offsetTop){
+//                    $('.toc_h4 a[href="'+'#_'+(i-1)+'"]').removeClass('active')
+//                }
+//            }else{
+//                $('.toc_h4 a[href="'+'#_'+(i+1)+'"]').removeClass('active')
+//            }
+//        }
+//        // 修复最后一个不高亮的bug
+//        if ($(window).scrollTop() >= $('h4#_'+(i+1)).offset().top-61 && $(window).scrollTop()<$('.comment-area-title').offset().top) {
+//            $('.toc_h4:last-child>a').addClass('active')
+//        }
+//        else{
+//            $('.toc_h4:last-child>a').removeClass('active')
+//        }
+//
+//    });
     function IsPC() {
         var userAgentInfo = navigator.userAgent;
         var Agents = ["Android", "iPhone",

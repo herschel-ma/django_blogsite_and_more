@@ -1,3 +1,4 @@
+import markdown
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
 from django.db.models import Count
@@ -67,11 +68,18 @@ def blog_date(request, year, month):
 def blog_detail(request, blog_pk):
     context = {}
     blog = get_object_or_404(Blog, pk=blog_pk)
+    md = markdown.Markdown(extensions=[
+        'markdown.extensions.extra',
+        'markdown.extensions.codehilite',
+        'markdown.extensions.toc',
+        ])
+    blog.content = md.convert(blog.content)
     read_cookie_key = read_num_plus(request, blog)
 
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
     context['blog'] = blog
+    context['toc'] = md.toc
     response = render(request, 'blog/blog_detail.html', context)
     response.set_cookie(read_cookie_key, 'true')
     return response

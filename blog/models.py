@@ -2,6 +2,7 @@ from django.db import models
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
+from mdeditor.fields import MDTextField 
 from read_record.models import ReadDetail
 from django.contrib.contenttypes.fields import GenericRelation
 
@@ -19,7 +20,8 @@ class BlogType(models.Model):
 class Blog(models.Model):
     title = models.CharField(max_length=50)
     blog_type = models.ForeignKey(BlogType, on_delete=models.CASCADE)
-    content = RichTextUploadingField()
+    # content = RichTextUploadingField()
+    content = MDTextField()
     read_details = GenericRelation(ReadDetail)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True)
