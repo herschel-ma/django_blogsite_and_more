@@ -292,7 +292,7 @@
         }
     });
     $(function() {
-        $('.toc_h4 a').click(function() {
+        $('.toc .toc_h4 a').click(function() {
             $(this).css('list-style-type', 'none')
             var target = document.getElementById(this.hash.slice(1));
             if (!target) return;
