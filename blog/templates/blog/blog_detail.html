@@ -304,6 +304,20 @@
             return false;
         });
     });
+    $(function()
+        $(window).hashchange(function(){
+            var target2 = $(location.hash);
+            if (target2.length == 1){
+                var targetOffset = $(target).offset().top - 60;
+                if (targetOffset>0){
+                    $('html,body').animate({
+                    scrollTop: targetOffset
+                    },300);
+                };
+            }
+    });
+        $(window).hashchange();
+    })
 //    $(window).scroll(function(){ //滚动到标题，目录高亮
 //        for(var i=0;i<$('h4').length-1;i++){
 //            if ($(window).scrollTop() >= $('h4')[i].offsetTop && $(window).scrollTop() < $('h4')[i+1].offsetTop){
