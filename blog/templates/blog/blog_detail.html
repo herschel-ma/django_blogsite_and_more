@@ -307,14 +307,15 @@
     $(function()
         $(window).hashchange(function(){
             var target2 = $(location.hash);
-            if (target2.length == 1){}
+            if (target2.length == 1){
                 var targetOffset = $(target).offset().top - 60;
-                if (top>0){
+                if (targetOffset>0){
                     $('html,body').animate({
                     scrollTop: targetOffset
                     },300);
-                }
-            });
+                };
+            }
+    });
         $(window).hashchange();
     })
 //    $(window).scroll(function(){ //滚动到标题，目录高亮
