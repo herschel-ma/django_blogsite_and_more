@@ -3,11 +3,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%); */
-    position: relative;
+    margin: 0 auto;
     text-align: center;
-    margin-top: 4em;
-    margin-bottom: 4em;
-    margin-left: .05em;
     }
 div#container{
     margin: 0 auto;
