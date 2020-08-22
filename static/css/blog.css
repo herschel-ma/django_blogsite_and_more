@@ -167,3 +167,6 @@ div.blog_list{
 blockquote {
     font-size: 13px;
 }
+.blog-detail-content p a img{
+    width: auto !important;
+}
