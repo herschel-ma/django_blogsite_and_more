@@ -8,11 +8,13 @@
 {%block header_extends%}
 <link rel="stylesheet" href={% static 'css/base.css' %}>
 <link rel="stylesheet" href={% static 'css/blog.css' %}>
-<script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
 <link rel="stylesheet" href={% static 'css/editormd.min.css' %}>
 <link rel="stylesheet" href="{% static 'css/prism.css' %}">
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+<script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 {%endblock%}
 {%block content%}
 {%block snow %}{%endblock%}
@@ -303,7 +305,7 @@
             return false;
         });
     });
-    $(function()
+    $(function(){
         $(window).hashchange(function(){
             var target2 = $(location.hash);
             if (target2.length == 1){
