@@ -1,2 +1,2 @@
 # django_blogsite_and_more
-It's a django blog learned by HanddyYang, changed a lot by myself. Well, it had varible things to compleate, and I hope I could finish it.
+This is a blog I learned to make from HanddyYang. I changed a lot of things. It's not perfect yet. There's a lot to be done and I hope to be able to do it.
