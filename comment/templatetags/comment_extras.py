@@ -35,7 +35,7 @@ def get_read_num(obj):
 
 @register.filter(name='remove_head')
 def remove_head(value):
-    strings = ["#","`", "*","+", "&nbsp"]
+    strings = ["#","`", "*","+", "&nbsp", "//(", "//)"]
     for i in strings:
         value = value.replace(i, '')
     return value
