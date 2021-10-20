@@ -131,7 +131,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-lg-2">
+        <! -- -->
+        <div class="col-lg-2">
             {{toc|safe}}
             <div class="wrap">
                 <div class="rocket-wrapper"><img class="rocket" src="{% static 'images/rocket.png' %}"></div>
@@ -304,6 +305,16 @@
             300);
             return false;
         });
+    });
+    $(function() {
+        $('.toc').css('display', 'flex')
+        $('.toc').css('position', 'absolute')
+        $('.toc').css('top', '30px')
+        $('.toc').css('left', '20px')
+        if($(window).width()<= 1190) {
+            console.log('sss')
+          $('.toc').css('display', 'none')
+        }
     });
 //    $(window).scroll(function(){ //滚动到标题，目录高亮
 //        for(var i=0;i<$('h4').length-1;i++){
