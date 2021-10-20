@@ -37,7 +37,7 @@
                             <span><img src="{% static 'images/comments.png' %}"><span class="font-comment">{% get_comment_count blog %}评论</span></span>
                             <span class="glyphicon glyphicon-heart"><span class="font-heart">{% get_like_count blog %}点赞</span></span>
                         </p>
-                        <p class="blog-content">{{ blog.content|striptags|truncatechars_html:280|remove_head|safe}}</p>
+                        <p class="blog-content">{{ blog.content|striptags|truncatechars_html:280|safe|remove_head}}</p>
                         </div>
                         {% empty %}
                         <p>--暂无博客，敬请期待--</p>

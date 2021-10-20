@@ -7,4 +7,5 @@ settings.py
 201801311450
 requeirest.txt         
 site.sql
-editor/
+media/
+static/
